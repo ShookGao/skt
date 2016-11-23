@@ -33,6 +33,11 @@ func Render(w http.ResponseWriter, partten string, data interface{}) error {
 	return t.ExecuteTemplate(w, filepath.Base(file), data)
 }
 
+// SendJSON 返回json到客户端
+func SendJSON(w http.ResponseWriter, i interface{}) error {
+	return json.NewEncoder(w).Encode(i)
+}
+
 // RemoteIP 只取IP地址，去除remoteAddr的端口号
 func RemoteIP(s string) string {
 	re := regexp.MustCompile("\\[(.*)\\]")

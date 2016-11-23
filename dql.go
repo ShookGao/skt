@@ -42,7 +42,6 @@ func (db *DB) Select(query string, args ...interface{}) ([]map[string]string, er
 			default:
 				vmap[field[i]] = fmt.Sprint(x)
 			}
-			// vmap[field[i]] = string(v)
 		}
 		vmapSlice = append(vmapSlice, vmap)
 	}

@@ -51,7 +51,12 @@ func GetDMLI(i interface{}) DMLStruct {
 		itx = append(itx, "?")
 		ds.InsertData = append(ds.InsertData, time.Now())
 	}
-
+	// 自动加更新时间
+	if _, b := rt.FieldByName("Updated"); b {
+		its = append(its, "updated")
+		itx = append(itx, "?")
+		ds.InsertData = append(ds.InsertData, time.Now())
+	}
 	itstr := strings.Join(its, ",")
 	itxstr := strings.Join(itx, ",")
 
