@@ -7,6 +7,7 @@ import (
 	"os"
 	"reflect"
 	"runtime"
+	"strconv"
 )
 
 // IsExist  whether a file or directory exists
@@ -46,4 +47,11 @@ func ToString(i interface{}) string {
 // ToByte 转换任意值为[]byte
 func ToByte(i interface{}) []byte {
 	return []byte(fmt.Sprint(i))
+}
+
+// ToInt64 转换任意值为int64
+func ToInt64(i interface{}) int64 {
+	num, err := strconv.Atoi(fmt.Sprint(i))
+	fmt.Println(err)
+	return int64(num)
 }
