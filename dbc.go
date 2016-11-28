@@ -3,6 +3,19 @@ package skt
 import "database/sql"
 import "time"
 
+const (
+	// DATE 日期格式
+	DATE = "2006-01-02"
+	// DATETIMEH 日期时间精确到小时
+	DATETIMEH = "2006-01-02 15"
+	// DATETIMEM 日期时间精确到分钟
+	DATETIMEM = "2006-01-02 15:04"
+	// DATETIME 日期时间精确到秒
+	DATETIME = "2006-01-02 15:04:05"
+	// LONGTIME 日期时间精确到毫秒
+	LONGTIME = "2006-01-02 15:04:05.999"
+)
+
 // DB sql.DB
 type DB struct {
 	*sql.DB

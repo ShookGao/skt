@@ -51,7 +51,6 @@ func ToByte(i interface{}) []byte {
 
 // ToInt64 转换任意值为int64
 func ToInt64(i interface{}) int64 {
-	num, err := strconv.Atoi(fmt.Sprint(i))
-	fmt.Println(err)
+	num, _ := strconv.Atoi(fmt.Sprint(i))
 	return int64(num)
 }

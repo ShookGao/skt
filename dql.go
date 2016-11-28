@@ -38,7 +38,7 @@ func (db *DB) Select(query string, args ...interface{}) ([]map[string]string, er
 			case []uint8:
 				vmap[field[i]] = string(x)
 			case time.Time:
-				vmap[field[i]] = x.Format("2006-01-02 15:04:05.999")
+				vmap[field[i]] = x.Format(DATETIME)
 			default:
 				vmap[field[i]] = fmt.Sprint(x)
 			}
