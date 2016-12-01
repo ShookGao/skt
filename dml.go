@@ -92,7 +92,6 @@ func GetDMLU(i interface{}, ss ...string) DMLStruct {
 			if fn == "id" {
 				ds.RowID = rv.Field(n).Int()
 			} else {
-
 				ius = append(ius, fn+"=?")
 				ds.UpdateData = append(ds.UpdateData, rv.Field(n).Interface())
 			}
@@ -148,7 +147,7 @@ func (db *DB) Insert(i interface{}) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
-	num, _ := res.RowsAffected()
+	num, _ := res.LastInsertId()
 	return num, err
 }
 

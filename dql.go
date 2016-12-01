@@ -14,11 +14,11 @@ func (db *DB) Select(query string, args ...interface{}) ([]map[string]string, er
 	defer rows.Close()
 
 	columns, err := rows.Columns()
-	var field []string
-	field = append(field, columns...)
 	if err != nil {
 		return nil, err
 	}
+	var field []string
+	field = append(field, columns...)
 	values := make([]interface{}, len(columns))
 	scanArgs := make([]interface{}, len(columns))
 	var vmapSlice []map[string]string

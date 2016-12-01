@@ -44,9 +44,16 @@ func RemoteIP(s string) string {
 	return re.FindString(s)
 }
 
-// DEJSON 解码json
+// DEJSON 解码object到json
 func DEJSON(r io.Reader) (map[string]interface{}, error) {
 	var m map[string]interface{}
+	err := json.NewDecoder(r).Decode(&m)
+	return m, err
+}
+
+// DEJSONS 解码array到json
+func DEJSONS(r io.Reader) ([]map[string]interface{}, error) {
+	var m []map[string]interface{}
 	err := json.NewDecoder(r).Decode(&m)
 	return m, err
 }
