@@ -1,7 +1,9 @@
 package skt
 
-import "database/sql"
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 const (
 	// DATE 日期格式
@@ -21,6 +23,11 @@ type DB struct {
 	*sql.DB
 }
 
+// TX sql.Tx
+type Tx struct {
+	*sql.Tx
+}
+
 // CK sql.CoreKey
 type CK struct {
 	ID      int64     `db:"integer primary key"`
@@ -35,4 +42,9 @@ func Open(driverName, dataSourceName string) (*DB, error) {
 		return nil, err
 	}
 	return &DB{db}, nil
+}
+
+// Go skt.tx
+func Go(tx *sql.Tx) *Tx {
+	return &Tx{tx}
 }

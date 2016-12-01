@@ -1,6 +1,7 @@
 package skt
 
 import (
+	"database/sql"
 	"reflect"
 	"strings"
 	"time"
@@ -137,47 +138,73 @@ func GetDMLD(i interface{}) DMLStruct {
 }
 
 // Insert insert data
-func (db *DB) Insert(i interface{}) (int64, error) {
+func (db *DB) Insert(i interface{}) (sql.Result, error) {
 	gm := GetDMLI(i)
 	stmt, err := db.Prepare(gm.InsertString)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	res, err := stmt.Exec(gm.InsertData...)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	num, _ := res.LastInsertId()
-	return num, err
+	return res, nil
 }
 
 // Delete data
-func (db *DB) Delete(i interface{}) (int64, error) {
+func (db *DB) Delete(i interface{}) (sql.Result, error) {
 	gm := GetDMLD(i)
 	stmt, err := db.Prepare(gm.DeleteString)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	res, err := stmt.Exec(gm.RowID)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	num, _ := res.RowsAffected()
-	return num, err
+	return res, nil
 }
 
 // Update data
-func (db *DB) Update(i interface{}, ss ...string) (int64, error) {
+func (db *DB) Update(i interface{}, ss ...string) (sql.Result, error) {
 	gm := GetDMLU(i, ss...)
-	// fmt.Println(gm.UpdateString, gm.UpdateData)
 	stmt, err := db.Prepare(gm.UpdateString)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
 	res, err := stmt.Exec(gm.UpdateData...)
 	if err != nil {
-		return 0, err
+		return nil, err
 	}
-	num, _ := res.RowsAffected()
-	return num, err
+	return res, nil
+}
+
+// Insert tx insert data
+func (tx *Tx) Insert(i interface{}) (sql.Result, error) {
+	gm := GetDMLI(i)
+	res, err := tx.Exec(gm.InsertString, gm.InsertData...)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// Update tx update data
+func (tx *Tx) Update(i interface{}, ss ...string) (sql.Result, error) {
+	gm := GetDMLU(i, ss...)
+	res, err := tx.Exec(gm.UpdateString, gm.UpdateData...)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// Delete data
+func (tx *Tx) Delete(i interface{}) (sql.Result, error) {
+	gm := GetDMLD(i)
+	res, err := tx.Exec(gm.DeleteString, gm.RowID)
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
