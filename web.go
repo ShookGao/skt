@@ -47,12 +47,7 @@ func SendJSONG(w http.ResponseWriter, i interface{}) error {
 	}
 	w.Header().Set("content-type", "application/json")
 	w.Header().Set("content-encoding", "gzip")
-	x := gzip.NewWriter(w)
-	_, err = x.Write(js)
-	if err != nil {
-		return err
-	}
-	err = x.Flush()
+	err = ENGzip(w, js)
 	if err != nil {
 		return err
 	}
@@ -82,4 +77,18 @@ func DEJSONS(r io.Reader) ([]map[string]interface{}, error) {
 // ENJSON 编码json
 func ENJSON(i interface{}) ([]byte, error) {
 	return json.Marshal(i)
+}
+
+// ENGzip gzip压缩数据
+func ENGzip(w io.Writer, b []byte) error {
+	x := gzip.NewWriter(w)
+	_, err := x.Write(b)
+	if err != nil {
+		return err
+	}
+	err = x.Flush()
+	if err != nil {
+		return err
+	}
+	return nil
 }
