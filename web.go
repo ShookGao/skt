@@ -1,14 +1,14 @@
 package skt
 
 import (
+	"compress/gzip"
 	"encoding/json"
 	"html/template"
 	"io"
 	"net/http"
+	"path/filepath"
 	"regexp"
 )
-
-import "path/filepath"
 
 // Config 系统配置
 type Config struct {
@@ -35,7 +35,28 @@ func Render(w http.ResponseWriter, partten string, data interface{}) error {
 
 // SendJSON 返回json到客户端
 func SendJSON(w http.ResponseWriter, i interface{}) error {
+	w.Header().Set("content-type", "application/json")
 	return json.NewEncoder(w).Encode(i)
+}
+
+// SendJSONG 返回压缩的json到客户端
+func SendJSONG(w http.ResponseWriter, i interface{}) error {
+	js, err := json.Marshal(i)
+	if err != nil {
+		return err
+	}
+	w.Header().Set("content-type", "application/json")
+	w.Header().Set("content-encoding", "gzip")
+	x := gzip.NewWriter(w)
+	_, err = x.Write(js)
+	if err != nil {
+		return err
+	}
+	err = x.Flush()
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // RemoteIP 只取IP地址，去除remoteAddr的端口号

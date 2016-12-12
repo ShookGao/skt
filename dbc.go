@@ -23,7 +23,7 @@ type DB struct {
 	*sql.DB
 }
 
-// TX sql.Tx
+// Tx sql.Tx
 type Tx struct {
 	*sql.Tx
 }
