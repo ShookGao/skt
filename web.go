@@ -35,6 +35,9 @@ func Render(w http.ResponseWriter, partten string, data interface{}) error {
 
 // SendJSON 返回json到客户端
 func SendJSON(w http.ResponseWriter, i interface{}) error {
+	w.Header().Set("Access-Control-Allow-Origin", "*") //允许访问所有域
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Request-Method", "POST") //限制访问方式
 	w.Header().Set("content-type", "application/json")
 	return json.NewEncoder(w).Encode(i)
 }
@@ -45,7 +48,10 @@ func SendJSONG(w http.ResponseWriter, i interface{}) error {
 	if err != nil {
 		return err
 	}
-	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*") //允许访问所有域
+	w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+	w.Header().Set("Access-Control-Request-Method", "POST") //限制访问方式
+	w.Header().Set("content-type", "application/json")      //返回数据格式是json
 	w.Header().Set("content-encoding", "gzip")
 	err = ENGzip(w, js)
 	if err != nil {
